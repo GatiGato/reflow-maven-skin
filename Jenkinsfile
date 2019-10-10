@@ -25,10 +25,6 @@ pipeline {
         }
     }
 
-    environment {
-        PATH = "${MAVEN_HOME}/bin:${env.PATH}"
-    }
-
     tools {
         maven 'Maven 3 (latest)'
         jdk 'JDK 1.8 (latest)'
@@ -38,7 +34,7 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                echo 'Building Branch: ' + env.BRANCH_NAME
+                echo 'Building Branch: ' + BRANCH_NAME
                 echo 'Using PATH = ' + env.PATH
             }
         }
@@ -60,7 +56,7 @@ pipeline {
         stage('Build') {
             when {
                 expression {
-                    env.BRANCH_NAME != 'develop'
+                    BRANCH_NAME != 'develop'
                 }
             }
             steps {
@@ -77,7 +73,7 @@ pipeline {
 
         stage('Build develop') {
             when {
-                branch 'develop'
+                branch '*/develop'
             }
             steps {
                 echo 'Building'

@@ -34,8 +34,9 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                echo 'Building Branch: ' + BRANCH_NAME
+                echo 'Building Branch: ' + env.BRANCH_NAME
                 echo 'Using PATH = ' + env.PATH
+                sh 'env'
             }
         }
 
@@ -56,7 +57,7 @@ pipeline {
         stage('Build') {
             when {
                 expression {
-                    BRANCH_NAME != 'develop'
+                  env.BRANCH_NAME != 'develop'
                 }
             }
             steps {
@@ -65,15 +66,17 @@ pipeline {
             }
             post {
                 always {
-                    junit(testResults: '**/surefire-reports/*.xml', allowEmptyResults: true)
-                    junit(testResults: '**/failsafe-reports/*.xml', allowEmptyResults: true)
+                  junit(testResults: '**/surefire-reports/*.xml', allowEmptyResults: true)
+                  junit(testResults: '**/failsafe-reports/*.xml', allowEmptyResults: true)
                 }
             }
         }
 
         stage('Build develop') {
             when {
-                branch '*/develop'
+              expression {
+                  env.BRANCH_NAME == 'develop'
+              }
             }
             steps {
                 echo 'Building'

@@ -19,6 +19,12 @@
  */
 pipeline {
 
+    agent {
+        node {
+            label 'master'
+        }
+    }
+
     environment {
         PATH = "${MAVEN_HOME}/bin:${env.PATH}"
     }

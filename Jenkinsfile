@@ -34,7 +34,7 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                echo 'Building Branch: ' + env.BRANCH_NAME
+                echo 'Building Branch: ' + env.GIT_BRANCH
                 echo 'Using PATH = ' + env.PATH
                 sh 'env'
             }
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out branch ' + env.BRANCH_NAME
+                echo 'Checking out branch ' + env.GIT_BRANCH
                 checkout scm
             }
         }
@@ -57,7 +57,7 @@ pipeline {
         stage('Build') {
             when {
                 expression {
-                  env.BRANCH_NAME != 'develop'
+                  env.GIT_BRANCH != 'origin/develop'
                 }
             }
             steps {
@@ -75,7 +75,7 @@ pipeline {
         stage('Build develop') {
             when {
               expression {
-                  env.BRANCH_NAME == 'develop'
+                  env.GIT_BRANCH == 'origin/develop'
               }
             }
             steps {
@@ -97,7 +97,7 @@ pipeline {
 
         stage('Build site') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             steps {
                 echo 'Building Site'
@@ -107,7 +107,7 @@ pipeline {
 
         stage('Stage site') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             steps {
                 echo 'Staging Site'

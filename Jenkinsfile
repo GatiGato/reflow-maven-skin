@@ -97,7 +97,9 @@ pipeline {
 
         stage('Build site') {
             when {
-                branch 'origin/develop'
+              expression {
+                  env.GIT_BRANCH == 'origin/develop'
+              }
             }
             steps {
                 echo 'Building Site'
@@ -107,7 +109,9 @@ pipeline {
 
         stage('Stage site') {
             when {
-                branch 'origin/develop'
+              expression {
+                  env.GIT_BRANCH == 'origin/develop'
+              }
             }
             steps {
                 echo 'Staging Site'
